@@ -10,12 +10,31 @@ export default function App() {
 
     const [allQuestions, setAllQuestions] = React.useState([])
 
-    const [endQuiz, setEndQuiz] = React.useState({
-        score: 0,
-        numSelected: 0
+    const [score, setScore] = React.useState(0)
+
+    const [numSelected, setNumSelected] = React.useState(0)
+
+    const [getScore, setGetScore] = React.useState(false)
+
+    const [formData, setFormData] = React.useState({
+        amount: "",
+        category: "",
+        difficulty: "",
+        type: ""
     })
 
-    let endScore = 0;
+    //handles form data
+
+    function handleChange(event) {
+
+        const {name, value} = event.target
+
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value
+        }
+        ))
+    }
 
     //Sweet Alert
     function emptyerror() {
@@ -26,101 +45,155 @@ export default function App() {
       });
     }
 
-    function endGame() {
-        if (endQuiz.numSelected < 5){
-            return emptyerror()
-        }
-
-        endScore = endQuiz.score
-        setEndQuiz({score:0, numSelected:0})
-    }
-
-    function startQuiz() {
-        setStartGame( prevState => !prevState )
-    };
-
+    //parse strings
     function replaceStr(inp) {
-        let res = inp.replaceAll("&#039;", "'").replaceAll("&quot;", '"').replaceAll("&amp;", "&").replace("&auml;", "ä").replace("&ouml;", "ö")
+        let res = inp.replaceAll("&#039;", "'").replaceAll("&quot;", '"').replaceAll("&amp;", "&").replaceAll("&auml;", "ä").replaceAll("&ouml;", "ö").replaceAll("&deg;","°").replaceAll("&ldquo;","“").replaceAll("&rdquo;","”").replaceAll("&hellip;","…").replaceAll("&lrm;","").replaceAll("&rlm;","").replaceAll("&aacute;","Á").replaceAll("&Aacute;","Á").replaceAll("&eacute;", "é")
         return res
     }
 
-    React.useEffect( () => {
-        fetch("https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple")
-        .then(res => res.json())
-        .then(data => data.results)
-        .then(obj => obj.map(item => {
+    function startQuiz() {
 
-            let { question, incorrect_answers, correct_answer } = item
+        setScore(0)
+        setNumSelected(0)
+        setGetScore(false)
+        setStartGame( prevState => !prevState )
+    };
 
-            let correct = replaceStr(correct_answer)
-            let answerChoice = incorrect_answers.concat(correct).map( choice => replaceStr(choice))
+    function endQuiz() {
 
-            let container = {}
-
-            container.id = nanoid()
-            container.correct = correct
-            container.question = replaceStr(question)
-            container.choices = answerChoice.map( choice => (
-                { id: nanoid(), choice: choice, selected: false }
-            ))
-            return container
-        }))
-        .then(parsedData => setAllQuestions(parsedData));
-    }, []);
-
-    function toggleSelect(event) {
-        const { name: userChoice, selected, value: correctAns } = event.target
-
-        let isCorrect = userChoice === correctAns;
-        let mask = question => question.correct === correctAns;
-        let mask2 = choices => choices.choice === userChoice;
-
-        let indexToReplace = allQuestions.findIndex(mask)
-
-        let currentQuestion = allQuestions.filter(mask)
-        let currentQuestionChoices = currentQuestion[0].choices
-        let indexToReplace2 = currentQuestionChoices.findIndex(mask2)
-
-        //let userChoiceToUpdate = currentQuestionChoices.filter(mask2)
-        //userChoiceToUpdate[0].selected = true
-
-        if (!selected && isCorrect){
-            allQuestions[indexToReplace].choices[indexToReplace2].selected = true
-            setEndQuiz(prevState => ({
-                score: prevState.score + 1,
-                numSelected: prevState.numSelected + 1
-            }))
-        } else if (!selected && !isCorrect) {
-            allQuestions[indexToReplace].choices[indexToReplace2].selected = true
-            setEndQuiz(prevState => ({
-                ...prevState,
-                numSelected: prevState.numSelected + 1
-            }))
-        } else if (selected && !isCorrect) {
-            allQuestions[indexToReplace].choices[indexToReplace2].selected = false
-            setEndQuiz(prevState => ({
-                ...prevState,
-                numSelected: prevState.numSelected - 1
-            }))
-        } else {
-            allQuestions[indexToReplace].choices[indexToReplace2].selected = false
-            setEndQuiz(prevState => ({
-                score: prevState.score - 1,
-                numSelected: prevState.numSelected - 1
-            }))
+        if (numSelected < allQuestions.length){
+            return emptyerror()
         }
-        console.log(endQuiz.score, endQuiz.numSelected)
+
+        setGetScore(prevState => !prevState)
     }
 
+    function toggleSelect(event) {
+
+        const { name: selectedChoice, value: id } = event.target
+
+        let setArr = []
+        for (let obj of allQuestions){
+            for (let item of obj){
+
+                if (item.id === id){
+                    //Adjusts toggle from prevMade selection to newSelection
+                    if ((item.selected) && (selectedChoice !== item.selected)){
+                        //if previous choice was correct
+                        if (item.selected === item.correct) {
+                            setArr.push([{
+                                ...item,
+                                selected: selectedChoice,
+                            }])
+                            setScore(prevState => prevState-1)
+                        //if new choice is correct
+                        } else if (selectedChoice === item.correct){
+                            setArr.push([{
+                                ...item,
+                                selected: selectedChoice,
+                            }])
+                            setScore(prevState => prevState+1)
+                        //if new and previous choices are incorrect
+                        } else {
+                            setArr.push([{
+                                ...item,
+                                selected: selectedChoice,
+                            }])
+                        }
+                    //Accounts for previously selected
+                    } else if (item.selected) {
+                        //unselect a correct choice
+                        if (selectedChoice === item.correct){
+                            setArr.push([{
+                                ...item,
+                                selected: false,
+                            }])
+                            setScore(prevState => prevState-1)
+                            setNumSelected(prevState => prevState-1)
+                        //unselect an incorrect choice
+                        } else {
+                            setArr.push([{
+                                ...item,
+                                selected: false,
+                            }])
+                            setNumSelected(prevState => prevState-1)
+                        }
+                    //Account for brand new selections
+                    } else {
+                        //made correct choice
+                        if (selectedChoice === item.correct){
+                            setArr.push([{
+                                ...item,
+                                selected: selectedChoice,
+                            }])
+                            setScore(prevState => prevState+1)
+                            setNumSelected(prevState => prevState+1)
+                        //made incorrect choice
+                        } else {
+                            setArr.push([{
+                                ...item,
+                                selected: selectedChoice,
+                            }])
+                            setNumSelected(prevState => prevState+1)
+                        }
+                    }
+                //set remaining items to as they were
+                } else {
+                    setArr.push([item])
+                }
+            }
+        }
+        setAllQuestions(setArr)
+    }
+
+    React.useEffect( () => {
+        fetch(`https://opentdb.com/api.php?amount=${formData.amount}&category=${formData.category}&difficulty=${formData.difficulty}&type=${formData.type}`)
+        .then(res => res.json())
+        .then(data => data.results)
+        .then(parsedData => {
+
+            const questionsArray = parsedData.map(item => {
+
+                const { question, correct_answer, incorrect_answers } = item
+
+                incorrect_answers.push(correct_answer)
+                let choicesArr = incorrect_answers.map(replaceStr)
+                choicesArr.sort((a,b) => { return 0.5 - Math.random() } )
+
+                const questionsArr = []
+                questionsArr.push({
+                    id: nanoid(),
+                    question: replaceStr(question),
+                    correct: replaceStr(correct_answer),
+                    choices: choicesArr,
+                    selected: false,
+                    isCorrectAndSelected: false
+                })
+
+                return questionsArr;
+            });
+
+        setAllQuestions(questionsArray);
+        });
+
+    }, [startGame, formData]);
+
+
     const questions = allQuestions.map(item => (
-        <Question
-        key={item.id}
-        choice={item.choices}
-        correct={item.correct}
-        question={item.question}
-        toggleSelect={toggleSelect}
-        />
+        item.map(el => (
+            <Question
+            key={el.id}
+            id={el.id}
+            selected={el.selected}
+            choice={el.choices}
+            correct={el.correct}
+            question={el.question}
+            getScore={getScore}
+            toggleSelect={toggleSelect}
+            />
+            ))
     ))
+
     return (
         <main>
             <div className="yellow--blob"></div>
@@ -128,22 +201,30 @@ export default function App() {
             <Start
             start={startGame}
             startQuiz={startQuiz}
+            formData={formData}
+            handleChange={handleChange}
             />
             <section
             className={startGame ? "questions--container" : "questions--container game"}>
                 {questions}
             </section>
-            {startGame && <button
-            className="check--button"
-            onClick={endGame}
-            > Check answers </button> }
-            {!startGame && endScore &&
-            <div className="play--again">
-                <p className="score">You scored {endScore}/5 correct answers </p>
+            {
+                startGame && !getScore &&
                 <button
-            className="play-again--button"
-            > Play again </button>
-            </div>}
+                className="check--button"
+                onClick={endQuiz}
+                > Check answers </button>
+            }
+            {
+                startGame && getScore &&
+                <div className="play--again">
+                    <p className="score">You scored {score}/{allQuestions.length} correct answers </p>
+                    <button
+                    className="play-again--button"
+                    onClick={startQuiz}
+                    > Play again </button>
+                </div>
+            }
         </main>
     )
 }

@@ -1,5 +1,5 @@
 import React from "react";
-
+import Form from "./Form";
 
 export default function Start(props) {
 
@@ -9,6 +9,10 @@ export default function Start(props) {
         >
             <h1 className="start--title">Quizzical</h1>
             <p className="start--description">Insert Description Here</p>
+            <Form
+            formData={props.formData}
+            handleChange={props.handleChange}
+            />
             <button
             className="start--button"
             onClick={props.startQuiz}

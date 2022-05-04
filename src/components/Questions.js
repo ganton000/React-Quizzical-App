@@ -1,26 +1,21 @@
 import React from "react";
-
+import Buttons from "./Buttons";
 export default function Question(props) {
 
-    const choices = props.choice.map(item => (
-        <button
-        className="choice"
-        key={item.id}
-        name={item.choice}
-        value={props.correct}
-        selected={item.selected}
-        onClick={ (event) => props.toggleSelect(event)}
-        >
-            {item.choice}
-        </button>
-    ))
+    //Add props.id to front of props.choice list to be used
+    //in Buttons.js Button element
+    props.choice.unshift(props.id)
 
     return (
         <div className="question">
             <h2 className="question--title">{props.question}</h2>
-            <div className="choices--container">
-                {choices}
-            </div>
+                <Buttons
+                choices={props.choice}
+                toggleSelect={props.toggleSelect}
+                selected={props.selected}
+                correct={props.correct}
+                getScore={props.getScore}
+                />
             <div className="border"></div>
         </div>
     )

@@ -10,10 +10,11 @@ body {
     overflow: hidden;
 }
 
-/*main{
+main{
     display: flex;
     flex-direction: column;
-}*/
+    gap: 10px;
+}
 
 .yellow--blob{
     position: absolute;
@@ -59,13 +60,11 @@ main, .start{
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    max-width: 800px;
+    max-width: 900px;
     height: 100%;
-    padding: 20px 0 0 0;
-    justify-content: center;
-    overflow: hidden;
-    gap: 15px;
+    gap: 10px;
     z-index: 999;
+    overflow: auto;
 }
 
 .game{
@@ -105,20 +104,21 @@ main, .start{
 
 .question--title{
     font-family: Karla;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 19px;
     letter-spacing: 0em;
     text-align: left;
     color: #293264;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     z-index: 999;
 }
 
 .choices--container{
     display: flex;
     flex-direction: row;
-    gap: 45px;
+    gap: 25px;
+    margin-bottom: 10px;
 }
 
 .choice{
@@ -133,7 +133,7 @@ main, .start{
     letter-spacing: 0em;
     text-align: center;
     color: #293264;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     padding: 5px 15px;
 }
 
@@ -145,7 +145,16 @@ main, .start{
     transform: rotate(-0.05deg);
 }
 
-.check--button, .play--again-button{
+.play--again{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    z-index: 999;
+}
+
+.check--button{
     height: 60px;
     width: 240px;
     border-radius: 15px;
@@ -159,11 +168,35 @@ main, .start{
     z-index: 999;
 }
 
+.play-again--button{
+    padding: 0;
+    height: 40px;
+    width: 150px;
+    border-radius: 25px;
+    background-color: #4D5B9E;
+    color: #F5F7FB;
+    font-size: 21px;
+    font-weight: 300;
+    font-family: 'Inter', 'Poppins';
+    margin: auto auto;
+    text-align: center;
+}
+
+.score{
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: center;
+    z-index: 999;
+}
+
 .start--button:focus, .choice:focus, .play-again--button:focus {
     outline: none;
 }
 
-.start--button:active, .choice:active, .play-again--button:active {
+.start--button:active, .play-again--button:active {
     box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
 }
 
@@ -173,16 +206,23 @@ main, .start{
     transition: 0.3s all linear;
 }
 
-.play--again{
-    display: flex;
-    flex-direction: column;
+.selected{
+    color: white;
+    background-color: #687ad4;
 }
 
-.score{
-    font-family: Inter;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 15px;
-    letter-spacing: 0em;
-    text-align: center;
+.incorrect{
+    background-color: #F8BCBC;
+    border-width: thin;
+}
+
+.correct{
+    background-color: #94D7A2;
+    border-width: thin;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

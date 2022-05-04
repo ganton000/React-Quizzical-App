@@ -57,8 +57,10 @@ main, .start{
 }
 
 .questions--container{
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     margin: 0 auto;
     max-width: 900px;
     height: 100%;
@@ -72,11 +74,11 @@ main, .start{
 }
 
 .start--title{
-    font-size: 45px;
-    letter-spacing: 4px;
+    font-size: 50px;
+    letter-spacing: 6px;
     font-family: 'Karla';
     line-height: 36.53px;
-    margin-bottom: 15px;
+    margin-bottom: 45px;
     z-index: 999;
 }
 
@@ -92,8 +94,8 @@ main, .start{
 
 .start--button {
     height: 60px;
-    width: 240px;
-    border-radius: 15px;
+    width: 220px;
+    border-radius: 30px;
     background-color: #4D5B9E;
     color: #F5F7FB;
     font-size: 26px;
@@ -222,7 +224,17 @@ main, .start{
 }
 
 .form{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    z-index: 999;
+}
+
+label{
+    font-size: 17px;
+}
+
+select {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    padding: 3px 0px 3px 10px;
+    font-size: 15px;
 }

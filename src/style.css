@@ -53,6 +53,10 @@ main, .start{
     padding: 20px 0;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+}
+
+.start{
     overflow: auto;
 }
 
@@ -240,26 +244,40 @@ select {
 }
 
 @media (max-width: 450px){
+
+
     .questions--container{
         width: 100%;
         height: 300px;
     }
-    .start{
+    .main, .start{
         width: 400px;
         height: 300px;
+    }
+    .check--button{
+        height: 80px;
     }
 }
 
 @media (max-width: 325px){
+
+    .main{
+        width: 100%;
+        height: 300px;
+    }
+
     .questions--container{
         width: 100%;
-        height: 200px;
+        height: 250px;
     }
 
     .start{
         width: 100%;
-        height: 200px;
+        height: 250px;
     }
 
+    .check--button{
+        height: 80px;
+    }
 
 }

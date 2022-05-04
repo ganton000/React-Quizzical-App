@@ -8,7 +8,7 @@ export default function Start(props) {
         className={props.start ? "start game" : "start"}
         >
             <h1 className="start--title">Quizzical</h1>
-            <p className="start--description">Insert Description Here</p>
+            {/*<p className="start--description">Insert Description Here</p>*/}
             <Form
             formData={props.formData}
             handleChange={props.handleChange}

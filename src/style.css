@@ -243,9 +243,30 @@ select {
     font-size: 15px;
 }
 
+@media (max-width: 675px){
+    body, main{
+        overflow: hidden;
+        height: 650px;
+    }
+
+    .questions--container, .start{
+        width: 100%;
+        height: 600px;
+    }
+
+    .check--button{
+        margin-bottom: 10px;
+    }
+    .start{
+        flex-direction: space-between;
+    }
+}
+
 @media (max-width: 450px){
 
-
+    body{
+        overflow: hidden;
+    }
     .questions--container{
         width: 100%;
         height: 300px;
@@ -256,10 +277,15 @@ select {
     }
     .check--button{
         height: 80px;
+        margin-bottom: 10px;
     }
 }
 
 @media (max-width: 325px){
+
+    .body{
+        overflow: hidden;
+    }
 
     .main{
         width: 100%;
@@ -278,6 +304,7 @@ select {
 
     .check--button{
         height: 80px;
+        margin-bottom: 10px;
     }
 
 }

@@ -47,7 +47,7 @@ export default function App() {
 
     //parse strings
     function replaceStr(inp) {
-        let res = inp.replaceAll("&#039;", "'").replaceAll("&quot;", '"').replaceAll("&amp;", "&").replaceAll("&auml;", "ä").replaceAll("&ouml;", "ö").replaceAll("&deg;","°").replaceAll("&ldquo;","“").replaceAll("&rdquo;","”").replaceAll("&hellip;","…").replaceAll("&lrm;","").replaceAll("&rlm;","").replaceAll("&aacute;","Á").replaceAll("&Aacute;","Á").replaceAll("&eacute;", "é").replaceAll("&shy;","-").replaceAll("&Uuml;", "Ü").replaceAll("&uuml;","ü")
+        let res = inp.replaceAll("&#039;", "'").replaceAll("&quot;", '"').replaceAll("&amp;", "&").replaceAll("&auml;", "ä").replaceAll("&ouml;", "ö").replaceAll("&deg;","°").replaceAll("&ldquo;","“").replaceAll("&rdquo;","”").replaceAll("&hellip;","…").replaceAll("&lrm;","").replaceAll("&rlm;","").replaceAll("&aacute;","Á").replaceAll("&Aacute;","Á").replaceAll("&eacute;", "é").replaceAll("&shy;","-").replaceAll("&Uuml;", "Ü").replaceAll("&uuml;","ü").replaceAll("&rsquo;","’").replaceAll("&lsquo;","‘")
         return res
     }
 
